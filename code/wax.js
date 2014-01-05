@@ -5,3 +5,4 @@
  * Time: 上午10:43
  * To change this template use File | Settings | File Templates.
  */
+var wax;
