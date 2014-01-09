@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<script type="text/javascript" src="../code/wax.js"></script>
+<script type="text/javascript" src="../code/jquery-1.10.2.js"></script>
+<body>
+<div id="hello"></div>
+<div class="test">test1</div>
+<div class="test">test2</div>
+</body>
+</html>
+<script type="text/javascript">
+    wax.ext(function(){},"test");
+    wax.ext({
+        a:function(){},
+        b:function(){}
+    });
+    console.log(wax.getVersion());
+    console.log(wax("#hello"));
+    console.log(wax("#hello").onlyDom());
+    console.log(wax(".test"));
+    wax("hello").forEach(function(x){
+        console.log(x);
+    });
+
+    wax.ajax("data.json",{},"get","json",function(response){
+        console.log("success",response);
+    });
+
+//    var json='{"name":"json","age":18}';
+//    var data=(new Function("","return "+json))();
+//    console.log(data);
+</script>
