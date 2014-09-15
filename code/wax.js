@@ -32,8 +32,9 @@
             attr:function(){},
             //设置样式
             css:function(){},
-            //扩展方法,将新方法放置到wax的原型里
+
             /////////////////////////////////////////////工具类
+            //清除空格
             trim:function(){
 
             },
@@ -58,6 +59,7 @@
                 jQuery.error( "Invalid JSON: " + data );
             },
             /////////////////////////////////////////////扩展开发类
+            //扩展方法,将新方法放置到wax的原型里
             ext:function(fns,name){
                 if(name && name instanceof String){
                     this[name]=fns;
@@ -75,6 +77,12 @@
             error:function(string){console.log("wax error:"+string);}
         };
 
+    //////////////////////////////////////  NodeList   ////////////////////////////////////
+    //
+    //  find,forEach,onlyDom
+    //
+    //////////////////////////////////////////////////////////////////////////////////////
+
     WAX.NodeList=function(str){
         var obj=this.find(str);
         this.list=[];
@@ -88,6 +96,16 @@
         }
     }
 
+    var WAXBase={
+        getAttr:function(dom,name){
+            var arg=name[1];
+            return dom.getAttribute(name);
+        },
+        setAttr:function(dom,name,val){
+            dom.setAttribute(name,val);
+        }
+    };
+
     WAX.NodeList.prototype=NodeFunction={
         find:function(str){
             if(str.indexOf("#")==0){
@@ -100,17 +118,45 @@
             }
         },
         forEach:function(Fn){
-            var i,list=this.list,len=list.length;
+            var i,
+                list=this.list,
+                len=list.length,results=[]
+                arg=arguments;
             for(i=0;i<len;i++){
-                Fn(list[i]);
+                results.push(Fn(list[i],arg));
             }
+            return len>1?results:results[0];
         },
         onlyDom:function(){
             return this.list[0];
+        },
+        //处理属性
+        attr:function(name,val){
+            console.log(this);
+            if(!val){
+//                return this.forEach(function(dom){
+//                    return dom.getAttribute(name);
+//                });
+                return this.forEach(WAXBase.getAttr,name);
+            }
+            else{
+                this.forEach(function(dom){
+                    dom.setAttribute(name,val);
+                });
+                return this;
+            }
+        },
+        //处理样式
+        css:function(){
+
         }
     };
 
-    //////////////////////////////////////  XHR-XMLHttpRequest   ////////////////////////////////////
+    //////////////////////////////////////  XHR-XMLHttpRequest   /////////////////////////
+    //
+    //  request,ajax,get,post,getJson
+    //
+    //////////////////////////////////////////////////////////////////////////////////////
 
     var XHR=function(){
         if(typeof XMLHttpRequest!="undefined"){
@@ -179,7 +225,7 @@
         for(i in obj1){
             obj2[i]=obj1[i];
         }
-    }
+    };
 
     extend(WAX,Wax);
 

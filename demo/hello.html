@@ -2,13 +2,69 @@
 <html>
 <head>
     <title></title>
+    <style>
+        :-webkit-full-screen{background-color:black;}
+        :full-screen{background-color:black;}
+    </style>
 </head>
 <script type="text/javascript" src="../code/wax.js"></script>
 <script type="text/javascript" src="../code/jquery-1.10.2.js"></script>
-<body>
-<div id="hello"></div>
-<div class="test">test1</div>
-<div class="test">test2</div>
+<body onresize="test();">
+<div id="hello" title="abc"></div>
+<div class="test" title="testAAAAAA">test1</div>
+<div class="test" title="testBBBBBB">test2</div>
+<div id="frame" style="position:fixed;left:0;top:0;width:100%;height:100%;min-width:500px;min-height:400px;background:#f6f6f6;overflow:auto;">
+    <div id="imagebox" style="position:absolute;left:0;right:210px;top:0;bottom:0;height:100%;background:#cccccc;overflow:hidden;">
+        <div style="width:100%;height:40px;color:#ffffff;background:#000000;text-align:center;">
+            <div style="float:left;">删除</div>
+            <span>4/4</span>
+            <div style="float:right;" onclick="full();">全屏幕</div>
+        </div>
+        <div style="position:absolute;width:100%;top:60px;bottom:60px;background:#666666;overflow:hidden;">
+            <div style="float:left;color:#ffffff;"><-</div>
+            <div style="position:absolute;top:0;left:30px;right:30px;height:100%;"><img src="http://b.zol-img.com.cn/desk/bizhi/image/4/960x600/1389145452841.jpg" width=100%></div>
+            <div style="float:right;color:#ffffff;">-></div>
+        </div>
+        <div style="position:absolute;left:0;bottom:0;width:100%;height:40px;background:#000000;">
+            <div style="margin:0 auto;width:500px;background:#888ccc;">
+                <div style="float:left;width:30px;height:40px;background:red;"><-</div>
+                <div style="float:left;width:440px;height:40px;">
+                    <ul style="margin:0;padding:0;list-style:none;">
+                        <li style="float:left;margin:0;padding:0;list-style:none;width:100px;height:40px;background:#f6f6f6;">1</li>
+                        <li style="float:left;margin:0;padding:0;list-style:none;width:100px;height:40px;background:#aaaaaa;">2</li>
+                        <li style="float:left;margin:0;padding:0;list-style:none;width:100px;height:40px;background:#f6f6f6;">3</li>
+                    </ul>
+                </div>
+                <div style="float:right;width:30px;height:40px;background:red;">-></div>
+            </div>
+        </div>
+    </div>
+    <div style="position:absolute;right:0;top:0;width:200px;height:100%;background:#888ccc;">1212</div>
+</div>
+<script type="text/javascript">
+    var fullmode=false;
+    function test(){
+        var box=document.getElementById("frame");
+        console.log(box.offsetWidth,box.offsetHeight);
+    }
+    function full(){
+        var box=document.getElementById("imagebox");
+        box.webkitRequestFullscreen();
+    }
+    document.addEventListener("webkitfullscreenchange",function(){
+        if(!fullmode){
+            var box=document.getElementById("imagebox");
+            box.style.right=0;
+            //box.webkitRequestFullscreen();
+        }
+        else{
+            var box=document.getElementById("imagebox");
+            box.style.right="210px";
+            //document.webkitCancelFullScreen();
+        }
+        fullmode=!fullmode;
+    })
+</script>
 </body>
 </html>
 <script type="text/javascript">
@@ -19,7 +75,8 @@
     });
     console.log(wax.getVersion());
     console.log(wax("#hello"));
-    console.log(wax("#hello").onlyDom());
+    //console.log(wax("#hello").attr("title","new title"));
+    console.log(wax(".test").attr("title"));
     console.log(wax(".test"));
     wax("hello").forEach(function(x){
         console.log(x);
